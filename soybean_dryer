@@ -161,7 +161,20 @@ print('가열후공기',airHeatE())
 print('계절ㅈ절대습도',seasonHumidity())
 print(OutTemp,OutRH)
 
-11537523.90
+def checkingTRH():
+    if OutTemp>=ObjT_min and OutTemp<=ObjT_max:
+        if OutRH>=ObjH_min and OutRH<=ObjH_min:
+            return True
+        else:
+            print('습도 안맞음',OutRH)
+    else:
+        print('온도 안맞음',OutTemp)
 
-2,607,681.9
+def checkingAir():
+    dif=(air_max-air_mean)/10
+    for i in 10:
+        if checkingTRH()==True:
+            air_max=
+
+        air_min=+dif
 
