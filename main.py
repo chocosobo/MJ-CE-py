@@ -10,12 +10,15 @@ bean_W=float(input('콩 질량 Kg/Day'))
 bean_h2oB=float(input('콩 수분 질량비 %'))                    #14
 bean_h2oA=float(input('건조 후 콩 수분 목표 질량비 %'))        #10
 h2oOut_bean=(bean_W-bean_W*(1-bean_h2oB*0.01)/(1-bean_h2oA*0.01))
-beanE_B=float(input('건조 전 콩 비엔탈피 KJ/Kg'))            #2.2625
-beanE_A=float(input('건조 후 콩 비엔탈피 KJ/Kg'))            #2.03
+beanE_B=round(1.4435*(1+4.06*0.01*bean_h2oB),4)               #2.2625
+beanE_A=round(1.4435*(1+4.06*0.01*bean_h2oA),4)               #2.03
 #유입량 설정
+beanDrytime=float(input('콩 건조시간 (h)'))
+
 air_min=bean_W*2
 air_max=bean_W*4
 #'air_W=92000'
+air_DW=air_W*(1-psySI.__W_DBT_RH_P(seasonT,seasonRH,P))
 
 
 #건조 가열  효율
@@ -94,6 +97,18 @@ def calcQ():
 #
 #        air_min=+dif
 
+def checkingTRH():
+    if OutTemp>=ObjT_min and OutTemp<=ObjT_max:
+        if OutRH>=ObjH_min and OutRH<=ObjH_max:
+            return True
+        else:
+            print('습도 안맞음',OutRH)
+    else:
+        print('온도 안맞음',OutTemp)
+
+        
+        
+        
 def finalQ():
     return min(soydry.airHeatE()-soydry.airseasonE())#측정값중
 

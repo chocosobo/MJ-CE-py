@@ -1,5 +1,5 @@
-def finalLNG():
-    return heaterQ/(LNGprice/heaterE)
+def finalLNGd():
+    return (finalQ/heaterE)*LNGprice
 
-def finalELEC():
-    return fanE/ELECprice
+
+days=계절별 일수

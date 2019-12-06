@@ -69,15 +69,4 @@ print('가열후공기',airHeatE())
 print('계절ㅈ절대습도',seasonHumidity())
 print(OutTemp,OutRH)
 
-def checkingTRH():
-    if OutTemp>=ObjT_min and OutTemp<=ObjT_max:
-        if OutRH>=ObjH_min and OutRH<=ObjH_max:
-            return True
-        else:
-            print('습도 안맞음',OutRH)
-    else:
-        print('온도 안맞음',OutTemp)
-
-
-
 
