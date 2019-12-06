@@ -1,11 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Nov 21 11:49:54 2019
-
-@author: sobo
-"""
-
+import pyplot as plt
 import psySI
+
 # All functions expect base SI units for any arguments given
 # DBT   - Dry bulb temperature          - Kelvins, K
 # DPT   - Dew point temperature         - Kelvins, K
@@ -178,3 +173,13 @@ def checkingAir():
 
         air_min=+dif
 
+def finalQ():
+    return min(answers)
+
+#습도도표에 표시 
+1 계절 온습도 -> 
+2 가열후 온습도(heaterT,seasonHumidity()) ->
+3 건조 후 온습도(OutTemp,OutRH)
+
+
+    
