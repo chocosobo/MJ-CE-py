@@ -1,3 +1,2 @@
 def finalLNG():
-    heaterQ=finalQ()/0.9
-    price=heaterQ*LNGprice
+    return heaterQ/(LNGprice/heaterE)
