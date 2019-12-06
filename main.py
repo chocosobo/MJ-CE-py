@@ -1,3 +1,7 @@
+
+import soybean_dryer.py as soydry
+
+
 #1기압
 P=float(101325)
 
@@ -11,12 +15,10 @@ beanE_A=float(input('건조 후 콩 비엔탈피 KJ/Kg'))            #2.03
 #유입량 설정
 air_min=bean_W*2
 air_max=bean_W*4
-'air_W=92000'
+#'air_W=92000'
 
 
 #건조 가열  효율
-heaterE_spring=float(input('가열기 효율 %'))/100                  #90
-dryerE_spring=float(input('건조기 효율 %'))/100                   #70
 #heaterE_summer=float(input('가열기 효율 %'))                 #90
 #dryerE_summer=float(input('건조기 효율 %'))                  #70
 #heaterE_fall=float(input('가열기 효율 %'))                   #90
@@ -28,29 +30,84 @@ heaterT=float(input('입구 공기 가열온도 °C'))+273.15          #90~120
 beanOutT=float(input('출구 콩 온도 °C'))+273.15               #45
 
 #송풍기 전력량
-#fanE=float(input('송풍기 전력소모 kW'))*24*30
+fanE=float(input('송풍기 전력소모 kW'))*24*30
+
+
+
 
 #출구 최종조건
 ObjT_min=(beanOutT+5)      #K                         #최저 온도
 ObjT_max=(beanOutT+10)     #K                         #최고 온도
 ObjH_min=20                #%                         #최저 습도
 ObjH_max=30                #%                         #최고 습도
+print(ObjT_min,ObjT_max,ObjH_min,ObjH_max)
+
+
+OutTemp= psySI.__DBT_H_W(soydry.airDryedE(),soydry.OutH())
+OutRH= psySI.__RH_DBT_W_P(OutTemp,soydry.OutH(),P)
+
+
+#계절선택
+i=0
+
+def perSeason():
+    global i
+    if i==0:
+        print('현재 봄입니다')
+        season='spring'
+    if i==1:
+        print('현재 여름입니다')
+        season='summer'
+    if i==2:
+        print('현재 가을입니다')
+        season='fall'
+    if i==3:
+        print('현재 겨울입니다')
+        season='winter'
+    else:
+        print('모든 계절이 끝났습니다')
+
+
+def GetseasonInfo():
+    seasonT=float(input('통계 온도 °C'))+273.15
+    seasonRH=float(input('통계 습도 %'))*0.01
+    heaterEff=float(input('가열기 효율 %'))/100                  #90
+    dryerEff=float(input('건조기 효율 %'))/100                   #70
+    
+    
+    
+    '습도도표에 표시'
+    '1 계절 온습도(seasonT,seasonRH)' 
+    '2 가열후 온습도(heaterT,seasonHumidity()) ->'
+    '3 건조 후 온습도(OutTemp,OutRH)'
+    
+def calcQ():
+    T=120
+    for i in 20:
+        
+
+#def checkingAir():
+#    dif=(air_max-air_mean)/10
+#    for i in 10:
+#        if checkingTRH()==True:
+#            air_max=
+#
+#        air_min=+dif
+
+def finalQ():
+    return min(soydry.airHeatE()-soydry.airseasonE())#측정값중
+
+
+
 
 ##csv로 계절별통계만들기
-print(ObjT_min,ObjT_max,ObjH_min,ObjH_max)
-seasonT=float(input('봄통계 온도 °C'))+273.15
-seasonH=float(input('봄통계 습도 %'))*0.01
 
-springT=float(input('봄통계 온도 °C'))+273.15
-springH=float(input('봄통계 습도 %'))*0.01
-#summerT=input('여름통계 온도')
-#summerH=input('여름통계 온도')
-#fallT=input('가을통계 온도')
-#fallH=input('가을통계 온도')
-#winterT=input('겨울통계 온도')
-#winterH=input('겨울통계 온도')
+
 
 #비용
 LNGprice=float(input('LNG 요금 (원/MJ)'))*1000
 ELECprice=float(input('전기 요금 (원/KW)'))
+
+
+
 
