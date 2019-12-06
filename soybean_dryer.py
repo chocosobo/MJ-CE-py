@@ -1,5 +1,5 @@
 
-
+import psySI.py as psySI
 # All functions expect base SI units for any arguments given
 # DBT   - Dry bulb temperature          - Kelvins, K
 # DPT   - Dew point temperature         - Kelvins, K
