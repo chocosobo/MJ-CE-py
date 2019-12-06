@@ -27,6 +27,9 @@ dryerE_spring=float(input('건조기 효율 %'))/100                   #70
 heaterT=float(input('입구 공기 가열온도 °C'))+273.15          #90~120
 beanOutT=float(input('출구 콩 온도 °C'))+273.15               #45
 
+#송풍기 전력량
+#fanE=float(input('송풍기 전력소모 kW'))*24*30
+
 #출구 최종조건
 ObjT_min=(beanOutT+5)      #K                         #최저 온도
 ObjT_max=(beanOutT+10)     #K                         #최고 온도
