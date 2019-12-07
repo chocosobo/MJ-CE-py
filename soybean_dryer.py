@@ -1,5 +1,6 @@
 
-import psySI.py as psySI
+import psySI as psySI
+import gang as gang
 # All functions expect base SI units for any arguments given
 # DBT   - Dry bulb temperature          - Kelvins, K
 # DPT   - Dew point temperature         - Kelvins, K
@@ -10,9 +11,6 @@ import psySI.py as psySI
 # V     - Specific volume               - Cubic meters per kilogram, m^3/kg
 # W     - Humidity ratio                - kilograms per kilograms, kg/kg
 # WBT   - Wet bulb temperature          - Kelvins, K
-
-
-
 
 #건조공기량
 def DA_W():
@@ -25,8 +23,6 @@ def BeanE_change():
     E_drying= ((beanOutT-273.15)*beanE_A*(bean_W-h2oOut_bean)) - ((seasonT-273.15)*beanE_B*bean_W)
     return E_drying
 
-
-season_DryerE=dryerE_spring
 #건조기에서 콩에 사용된 엔탈피 총량
 def DryerE():
     return (BeanE_change()) / DryerE
@@ -63,10 +59,9 @@ def OutH():
 
 
 
-print('건조후엔탙ㄹ피','출구절ㄹ대습도',OutH())
-print('건조후 공기총엔탈',airDryedE())
-print('가열후공기',airHeatE())
-print('계절ㅈ절대습도',seasonHumidity())
-print(OutTemp,OutRH)
-
+#print('건조후엔탙ㄹ피','출구절ㄹ대습도',OutH())
+#print('건조후 공기총엔탈',airDryedE())
+#print('가열후공기',airHeatE())
+#print('계절ㅈ절대습도',seasonHumidity())
+#print(OutTemp,OutRH)
 
