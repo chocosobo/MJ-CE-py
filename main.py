@@ -1,5 +1,5 @@
 
-import soybean_dryer.py as soydry
+import psySI.py as psySI
 
 
 #1기압
@@ -50,25 +50,76 @@ OutTemp= psySI.__DBT_H_W(soydry.airDryedE(),soydry.OutH())
 OutRH= psySI.__RH_DBT_W_P(OutTemp,soydry.OutH(),P)
 
 
-#계절선택
-i=0
+import psySI as psySI
+# All functions expect base SI units for any arguments given
+# DBT   - Dry bulb temperature          - Kelvins, K
+# DPT   - Dew point temperature         - Kelvins, K
+# H     - Specific enthalpy             - kiloJoules per kilogram, kJ/kg
+# P     - Atmospheric pressure          - Pascals, Pa
+# Pw    - Water vapor partial pressure  - Pascals, Pa
+# RH    - Relative humidity             - Decimal (i.e. not a percentage)
+# V     - Specific volume               - Cubic meters per kilogram, m^3/kg
+# W     - Humidity ratio                - kilograms per kilograms, kg/kg
+# WBT   - Wet bulb temperature          - Kelvins, K
 
-def perSeason():
-    global i
-    if i==0:
-        print('현재 봄입니다')
-        season='spring'
-    if i==1:
-        print('현재 여름입니다')
-        season='summer'
-    if i==2:
-        print('현재 가을입니다')
-        season='fall'
-    if i==3:
-        print('현재 겨울입니다')
-        season='winter'
-    else:
-        print('모든 계절이 끝났습니다')
+
+#건조공기량
+def DA_W():
+    return air_W*(1-psySI.__W_DBT_H(seasonT,seasonH))
+
+
+#콩에 소비된 엔탈피  총량
+def BeanE_change():
+    return ((beanOutT-273.15)*beanE_A*(bean_W-h2oOut_bean)) - ((seasonT-273.15)*beanE_B*bean_W)
+
+#건조기에서 콩에 사용된 엔탈피 총량
+def DryerE():
+    return (BeanE_change()) / DryerEff
+
+
+#계절 절대습도
+def seasonHumidity():
+    return psySI.__W_DBT_RH_P(seasonT,seasonH,P)
+
+#계절 엔탈피
+def airseasonE():
+    enthalpy=psySI.__H_DBT_W(seasonT,seasonHumidity())
+    return enthalpy
+
+
+#가열후 공기 엔탈피
+def airHeatE():
+    E= psySI.__H_DBT_W(heaterT,psySI.__W_DBT_RH_P(seasonT,seasonH,P))
+    return E
+
+#가열기  엔탈피
+
+
+#건조 후 공기 총 엔탈피
+def airDryedE():
+    E= airHeatE() - (DryerE()/DA_W())
+    return E
+
+
+#출구 절대습도  w
+def OutH():
+    Humid= (h2oOut_bean + air_W*seasonHumidity())/air_W
+    return Humid
+
+def OutT():
+    return psySI.__DBT_H_W(OutH(),airDryedE())
+    
+def OutRH():
+    return psySI.__RH_DBT_W_P(OutT(),airDryedE(),P)
+
+    
+
+
+#print('건조후엔탙ㄹ피','출구절ㄹ대습도',OutH())
+#print('건조후 공기총엔탈',airDryedE())
+#print('가열후공기',airHeatE())
+#print('계절ㅈ절대습도',seasonHumidity())
+#print(OutTemp,OutRH)
 
 
 def GetseasonInfo():
@@ -84,30 +135,63 @@ def GetseasonInfo():
     '2 가열후 온습도(heaterT,seasonHumidity()) ->'
     '3 건조 후 온습도(OutTemp,OutRH)'
     
-def calcQ():
-    T=120
-    for i in 20:
-        
 
-#def checkingAir():
-#    dif=(air_max-air_mean)/10
-#    for i in 10:
-#        if checkingTRH()==True:
-#            air_max=
-#
-#        air_min=+dif
+
+def checkingT():
+    for i=heaterT i>=Tmin i=i-1:
+        checkingAir()
+
+        #for item in list
+    return min([리스트중 heaterT]*([리스트중 air_max]*(1-psySI.__W_DBT_RH_P(seasonT,seasonRH,P)))*(__H_DBT_W( T,((h2oOut/DA)+seasonHumidity()))-(airseasonE())))
+
+
+
+
+def checkingAir():
+    IsFinded = False
+    while True:
+        dif=(air_max-air_min)/100
+
+        if dif < 1:
+            break
+
+        elif checkingTRH()==False:
+            air_min+=dif
+        elif checkingTRH()==True:
+            IsFinded = True
+            air_max=air_min
+            air_min=air_max-dif
+    if IsFinded:
+        list.append([air_max,heaterT,OutTemp,outRH])
+
+
+
+list=[]
+
+OutTemp = 0
+OutRH = 0
 
 def checkingTRH():
+    OutTemp= psySI.__DBT_H_W(soydry.airDryedE(),soydry.OutH())
+    OutRH= psySI.__RH_DBT_W_P(OutTemp,soydry.OutH(),P)
+
     if OutTemp>=ObjT_min and OutTemp<=ObjT_max:
         if OutRH>=ObjH_min and OutRH<=ObjH_max:
             return True
         else:
             print('습도 안맞음',OutRH)
-    else:
-        print('온도 안맞음',OutTemp)
+            return False
+    if OutTemp>ObjT_max:
+        print('과열')
+        return False
+    if OutTemp<ObjT_min and OutRH>ObjH_max:
+        print('공기불충분')
+        return False
 
-        
-        
+print(checkingTRH())
+print(checkingAir())
+print(checkingT())
+
         
 def finalQ():
     return min(soydry.airHeatE()-soydry.airseasonE())#측정값중
@@ -122,7 +206,3 @@ def finalQ():
 #비용
 LNGprice=float(input('LNG 요금 (원/MJ)'))*1000
 ELECprice=float(input('전기 요금 (원/KW)'))
-
-
-
-

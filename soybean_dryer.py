@@ -1,6 +1,5 @@
 
 import psySI as psySI
-import gang as gang
 # All functions expect base SI units for any arguments given
 # DBT   - Dry bulb temperature          - Kelvins, K
 # DPT   - Dew point temperature         - Kelvins, K
