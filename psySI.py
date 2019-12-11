@@ -12,7 +12,7 @@ import math as m
 # WBT   - Wet bulb temperature          - Kelvins, K
 
 # Minimum dry bulb temperature
-Min_DBT=253.15
+Min_DBT=243.15
 # Maximum dry bulb temperature
 Max_DBT=473.15
 # Convergence tolerance
@@ -44,22 +44,11 @@ def __DBT_H_V_P(H, V, P):
         DBT=(DBTa+DBTb)/2
     return DBT
 
-def __DBT_H_W(H, W):
-    [DBTa, DBTb]=[Min_DBT, Max_DBT]
-    DBT=(DBTa+DBTb)/2
-    print(DBT,'지금계산할온도')
-    while DBTb-DBTa>TOL:
-        ya=W-__W_DBT_H(DBTa, H)
-        y=W-__W_DBT_H(DBT, H)
-        print('작은거',ya,'큰거',y)
-        if __is_positive(y)==__is_positive(ya):
-            DBTa=DBT
-            print('작은쪽',DBTa)
-        else:
-            DBTb=DBT
-            print('큰쪽',DBTb)
-        DBT=(DBTa+DBTb)/2
-    return DBT
+# ASHRAE 2009 Chapter 1 Equation 32
+def __W_DBT_H(DBT, H):
+    if __valid_DBT(DBT):
+        DBT=DBT-273.15
+        return (H-1.006*DBT)/(2501+1.86*DBT)
 
 def __DBT_H_WBT_P(H, WBT, P):
     [DBTa, DBTb]=[Min_DBT, Max_DBT]
@@ -311,6 +300,19 @@ def state(prop1, prop1val, prop2, prop2val,P):
         WBT=__WBT_DBT_W_P(DBT, W, P)
     return [DBT, H, RH, V, W, WBT]
 
+def __DBT_H_W(H, W):
+    [DBTa, DBTb]=[Min_DBT, Max_DBT]
+    DBT=(DBTa+DBTb)/2
+    while DBTb-DBTa>TOL:
+        ya=W-__W_DBT_H(DBTa, H)
+        y=W-__W_DBT_H(DBT, H)
+        if __is_positive(y)==__is_positive(ya):
+            DBTa=DBT
+        else:
+            DBTb=DBT
+        DBT=(DBTa+DBTb)/2
+    return DBT
+
 # ASHRAE 2009 Chapter 1 Equation 22 and Equation 24
 def __RH_DBT_W_P(DBT, W, P):
     if __valid_DBT(DBT):
@@ -321,11 +323,6 @@ def __V_DBT_W_P(DBT, W, P):
     if __valid_DBT(DBT):
         return 287.042*DBT*(1+1.607858*W)/P
 
-# ASHRAE 2009 Chapter 1 Equation 32
-def __W_DBT_H(DBT, H):
-    if __valid_DBT(DBT):
-        DBT=DBT-273.15
-        return (H-1.006*DBT)/(2501+1.86*DBT)
 
 # ASHRAE 2009 Chapter 1 Equation 22 and Equation 24
 def __W_DBT_RH_P(DBT, RH, P):
