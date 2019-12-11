@@ -15,19 +15,11 @@ beanE_A=round(1.4435*(1+4.06*0.01*bean_h2oA),4)               #2.03
 #유입량 설정
 beanDrytime=float(input('콩 건조시간 (h)'))
 
-#'air_W=92000'
 
+heater_Max=float(input('입구 공기 최고 가열온도 °C'))+273.15  #120
+heater_Min=float(input('입구 공기 최저 가열온도 °C'))+273.15  #100
 
-
-#건조 가열  효율
-#heaterE_summer=float(input('가열기 효율 %'))                 #90
-#dryerE_summer=float(input('건조기 효율 %'))                  #70
-#heaterE_fall=float(input('가열기 효율 %'))                   #90
-#dryerE_fall=float(input('건조기 효율 %'))                    #70
-#heaterE_winter=float(input('가열기 효율 %'))                 #90
-#dryerE_winter=float(input('건조기 효율 %'))                  #60
-
-heaterT=float(input('입구 공기 가열온도 °C'))+273.15          #90~120
+heaterT=heater_Max
 beanOutT=float(input('출구 콩 온도 °C'))+273.15               #45
 
 #송풍기 전력량
@@ -123,13 +115,14 @@ def Heating():
     
 
 
-#def checkingT():
-#    
-#    for i=heaterT i>=Tmin i=i-1:
-#        checkingDA()
-#
+def checkingT():
+    
+    while heaterT>=heater_Min :
+        checkingDA()
+
         #for item in list
-#    return min([리스트중 heaterT]*([리스트중 air_max]*(1-psySI.__W_DBT_RH_P(seasonT,seasonRH,P)))*(__H_DBT_W( T,((h2oOut/DA)+seasonHumidity()))-(airseasonE())))
+        heaterT=-1
+    return min([리스트중 heaterT]*([리스트중 air_max]*(1-psySI.__W_DBT_RH_P(seasonT,seasonRH,P)))*(__H_DBT_W( T,((h2oOut/DA)+seasonHumidity()))-(airseasonE())))
 
 
 

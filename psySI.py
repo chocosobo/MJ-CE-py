@@ -47,13 +47,17 @@ def __DBT_H_V_P(H, V, P):
 def __DBT_H_W(H, W):
     [DBTa, DBTb]=[Min_DBT, Max_DBT]
     DBT=(DBTa+DBTb)/2
+    print(DBT,'지금계산할온도')
     while DBTb-DBTa>TOL:
         ya=W-__W_DBT_H(DBTa, H)
         y=W-__W_DBT_H(DBT, H)
+        print('작은거',ya,'큰거',y)
         if __is_positive(y)==__is_positive(ya):
             DBTa=DBT
+            print('작은쪽',DBTa)
         else:
             DBTb=DBT
+            print('큰쪽',DBTb)
         DBT=(DBTa+DBTb)/2
     return DBT
 
