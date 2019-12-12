@@ -14,3 +14,7 @@
 2. 폴더째로 받아서 그 폴더에 cmd를 연다
 3. python main.py
 4. 이후 입력
+
+
+과정 모식도
+https://github.com/chocosobo/MJ-CE-py/blob/master/diagram.png
