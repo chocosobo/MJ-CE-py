@@ -2,8 +2,15 @@
 import psySI as psySI
 
 
+
+
+
+
+
+
 loop=0
 pros=0
+Q=0
 while loop==0:
     
     
@@ -81,8 +88,9 @@ while loop==0:
             
             seasonW=psySI.__W_DBT_RH_P(seasonT,seasonRH,P)
             seasonE=psySI.__H_DBT_W(seasonT,seasonW)
-            
+            print('기본 엔탈피',seasonE)
             HeaterE=psySI.__H_DBT_W(heaterT,seasonW)
+            print('히터 엔탈피',HeaterE)
             chDA=0
             while dif>1:
             
@@ -127,10 +135,9 @@ while loop==0:
                             #print('공기 부족')
                             chTRH=1
                         elif OutRH>=ObjRH_min and OutRH<=ObjRH_max:
-                            #print(OutRH)
                             #print('적합한 값',air_W)
                             #a=input('적합한번')
-                            Q=DA_W*(HeaterE-seasonE)
+                            Q=DA_W*(HeaterE-seasonE) #총 에너지 KJ
                             chTRH=0
                             chT=1
                         elif OutRH<ObjRH_min:
@@ -166,12 +173,15 @@ while loop==0:
             heaterT=heaterT-1
         if chT==1:
             heaterT=heaterT+1
-            final.append([Q,air_W,seasonT-273.15,seasonW,heaterT-273.15,seasonW,OutTemp-273.15,OutW])
-            print('최소 공기량',air_W)
-            print('최소 에너지 소모량',Q)
-            print('계절 온도 절대습도',seasonT-273.15,seasonW)
-            print('가열 후 온도 절대습도',heaterT-273.15,seasonW)
-            print('출구 온도 절대습도',OutTemp-273.15,OutW)
+            final.append([Q,air_W,seasonT-273.15,seasonW,heaterT-273.15,seasonW,OutTemp-273.15,OutW,OutRH])
+            print('최소 공기량',air_W,'kg')
+            print('효율 무시한 에너지 소모 총량',Q/1000,'MJ')
+            print('계절 온도',seasonT-273.15,'°C')
+            print('계절 절대습도',seasonW,'kg/kg(DA)')
+            print('가열 후 온도',heaterT-273.15,'°C')
+            print('출구 온도',OutTemp-273.15,'°C')
+            print('출구 상대습도 ',OutRH*100,'%')
+            print('출구 절대습도',OutW,'kg/kg(DA)')
         pros=3
        # print(DAlist.sort)
     
@@ -221,7 +231,8 @@ while loop==0:
         
         print('\n온습도')
         print('최소 공기량',air_W)
-        print('최소 에너지 소모량',Q)
+        print('최소 에너지 소모량 KJ',Q)
+        print('최소 에너지 소모량 kWh',Q/3600)
         print('계절 온도 절대습도',seasonT-273.15,seasonW)
         print('가열 후 온도 절대습도',heaterT-273.15,seasonW)
         print('출구 온도 절대습도',OutTemp-273.15,OutW)
