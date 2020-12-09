@@ -77,8 +77,8 @@ while loop==0:
                 #print(DAlist)
                 break
             
-            air_min=bean_W*2
-            air_max=bean_W*4
+            air_min=bean_W*1.5
+            air_max=bean_W*6
             
             dif=1000
             
@@ -98,6 +98,7 @@ while loop==0:
                     #print('온도 낮추기')
                     break
                 
+                print(chT)
                 if chT==1:
                     break
                 
@@ -141,10 +142,10 @@ while loop==0:
                             chTRH=0
                             chT=1
                         elif OutRH<ObjRH_min:
-                            #print('온도 적합,공기 넘침',OutRH)
+                            print('온도 적합,공기 넘침',OutRH)
                             chTRH=2
                     elif OutTemp>ObjT_max:
-                        #print('과열, 다음으로')
+                        print('과열, 다음으로')
                         chTRH=2
                         
                     if chTRH==0:
@@ -165,6 +166,7 @@ while loop==0:
                     
                     if air_W>air_max:
                         chT=2
+                        print(heaterT,"모자란데?")
                                     
                     
             #DAlist.append([Q,air_W,heaterT-273.15,OutTemp,OutRH])
@@ -182,6 +184,10 @@ while loop==0:
             print('출구 온도',OutTemp-273.15,'°C')
             print('출구 상대습도 ',OutRH*100,'%')
             print('출구 절대습도',OutW,'kg/kg(DA)')
+
+        if chT==2:
+            print("안되는듯?",heaterT)
+
         pros=3
        # print(DAlist.sort)
     
